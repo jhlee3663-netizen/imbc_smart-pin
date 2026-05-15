@@ -1,11 +1,12 @@
 {
   "name": "Smart Pin",
-  "id": "smart-pin-spec",
+  "id": "1636399605277445999",
   "api": "1.0.0",
   "main": "code.js",
   "ui": "ui.html",
   "editorType": [
     "figma",
     "dev"
-  ]
+  ],
+  "documentAccess": "dynamic-page"
 }
