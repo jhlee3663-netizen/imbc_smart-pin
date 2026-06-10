@@ -8,5 +8,12 @@
     "figma",
     "dev"
   ],
-  "documentAccess": "dynamic-page"
+  "documentAccess": "dynamic-page",
+  "networkAccess": {
+    "allowedDomains": [
+      "https://fonts.googleapis.com",
+      "https://fonts.gstatic.com",
+      "https://api.fontshare.com"
+    ]
+  }
 }
