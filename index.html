@@ -11,9 +11,7 @@
   --bg:#f2f4f6;--card:#fff;
   --t1:#191f28;--t2:#4e5968;--t3:#8b95a1;
   --line:#e5e8eb;--line2:#f2f4f6;
-  --success:#03b26c;--error:#f04452;--warning:#ffc342;
   --cat-design:#6366ff;--cat-descript:#11bb85;--cat-dev:#ff952f;--cat-ask:#ea4444;
-  --r-card:14px;--r-btn:10px;
 }
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--t1);min-height:100vh;font-size:15px;line-height:1.5}
 button{font-family:inherit;cursor:pointer;border:none;outline:none;background:none}
@@ -24,22 +22,55 @@ a{text-decoration:none}
 .screen{display:none;min-height:100vh}
 .screen.active{display:flex;flex-direction:column}
 
-/* ── Setup ── */
+/* ── No-key guide screen ── */
+#guide{align-items:center;justify-content:center;padding:40px 16px}
+.guide-card{background:var(--card);border-radius:20px;padding:32px 28px;width:100%;max-width:420px;box-shadow:0 4px 24px rgba(0,0,0,0.06)}
+.guide-logo{font-size:36px;margin-bottom:14px;text-align:center}
+.guide-title{font-size:20px;font-weight:800;color:var(--t1);margin-bottom:8px;letter-spacing:-0.03em;text-align:center}
+.guide-sub{font-size:13.5px;color:var(--t2);line-height:1.7;text-align:center;margin-bottom:28px}
+
+.steps{display:flex;flex-direction:column;gap:12px;margin-bottom:28px}
+.step{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;background:var(--bg);border-radius:12px}
+.step-num{width:24px;height:24px;border-radius:9999px;background:var(--primary);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.step-body{}
+.step-title{font-size:13.5px;font-weight:700;color:var(--t1);margin-bottom:2px}
+.step-desc{font-size:12px;color:var(--t2);line-height:1.6}
+.step-tag{display:inline-block;background:var(--primary-bg);color:var(--primary);border-radius:6px;padding:1px 7px;font-size:11.5px;font-weight:600;margin-top:4px}
+
+.guide-divider{text-align:center;font-size:12px;color:var(--t3);margin-bottom:20px;position:relative}
+.guide-divider::before,.guide-divider::after{content:'';position:absolute;top:50%;width:38%;height:1px;background:var(--line)}
+.guide-divider::before{left:0}.guide-divider::after{right:0}
+
+.btn-manual{width:100%;height:44px;background:var(--bg);border:1.5px solid var(--line);color:var(--t2);border-radius:10px;font-size:13.5px;font-weight:600;transition:background .15s}
+.btn-manual:hover{background:#eaedf0}
+
+/* ── Token setup screen ── */
 #setup{align-items:center;justify-content:center;padding:40px 16px}
 .setup-card{background:var(--card);border-radius:20px;padding:32px 28px;width:100%;max-width:420px;box-shadow:0 4px 24px rgba(0,0,0,0.06)}
 .setup-logo{font-size:36px;margin-bottom:14px;text-align:center}
 .setup-title{font-size:20px;font-weight:800;color:var(--t1);margin-bottom:6px;letter-spacing:-0.03em;text-align:center}
 .setup-sub{font-size:13px;color:var(--t2);line-height:1.7;text-align:center;margin-bottom:24px}
-.notice-box{background:#fff9e7;border:1px solid #ffe09b;border-radius:10px;padding:14px 16px;font-size:12.5px;color:#7a5c00;line-height:1.65;margin-bottom:20px}
-.notice-box strong{display:block;margin-bottom:3px;font-weight:700}
-.field{margin-bottom:14px}
+
+.info-row{display:flex;align-items:center;gap:8px;padding:12px 14px;background:#f0f7ff;border-radius:10px;margin-bottom:20px}
+.info-row svg{flex-shrink:0;color:var(--primary)}
+.info-row-text{font-size:12.5px;color:#2d6ac8;line-height:1.5}
+
+.field{margin-bottom:16px}
 .field-label{font-size:12px;font-weight:600;color:var(--t3);margin-bottom:6px;display:block}
 .field-input{width:100%;height:44px;border:1.5px solid var(--line);border-radius:10px;padding:0 14px;font-size:14px;color:var(--t1);background:var(--bg);transition:border-color .2s}
 .field-input:focus{border-color:var(--primary);background:#fff}
 .field-hint{font-size:11.5px;color:var(--t3);margin-top:6px;line-height:1.6}
-.btn-fill{width:100%;height:48px;background:var(--primary);color:#fff;border-radius:var(--r-btn);font-size:15px;font-weight:700;letter-spacing:-0.01em;transition:background .2s;margin-top:6px}
+.field-hint a{color:var(--primary)}
+
+.token-steps{background:var(--bg);border-radius:10px;padding:14px 16px;margin-bottom:16px}
+.token-step{display:flex;align-items:flex-start;gap:8px;font-size:12px;color:var(--t2);line-height:1.6;padding:3px 0}
+.token-step-n{font-weight:700;color:var(--primary);flex-shrink:0;min-width:14px}
+
+.btn-fill{width:100%;height:48px;background:var(--primary);color:#fff;border-radius:10px;font-size:15px;font-weight:700;letter-spacing:-0.01em;transition:background .2s}
 .btn-fill:hover{background:var(--primary-dark)}
-.btn-fill:disabled{background:#c9e2ff;cursor:default}
+
+/* ── Manual key input (inside setup) ── */
+#manual-key-wrap{display:none}
 
 /* ── App header ── */
 #app header{background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10}
@@ -63,14 +94,11 @@ a{text-decoration:none}
 
 /* ── Pin list ── */
 .list{padding:16px 0 48px;flex:1;max-width:560px;width:100%;margin:0 auto}
-
 .page-section{margin-bottom:8px}
 .page-hd{padding:10px 20px 6px;display:flex;align-items:center;gap:8px}
 .page-name{font-size:14px;font-weight:700;color:var(--t1);letter-spacing:-0.02em}
 .page-cnt{font-size:11px;font-weight:700;color:#fff;background:var(--primary);border-radius:9999px;padding:2px 8px}
-
 .group-hd{padding:6px 20px 4px;font-size:11.5px;font-weight:600;color:var(--t3);display:flex;align-items:center;gap:4px}
-
 .pin-card{background:var(--card);margin:0 12px 2px;border-radius:12px;overflow:hidden;cursor:pointer;transition:box-shadow .15s}
 .pin-card:hover{box-shadow:0 2px 12px rgba(0,0,0,0.07)}
 .card-head{display:flex;align-items:center;gap:10px;padding:12px 14px}
@@ -88,7 +116,6 @@ a{text-decoration:none}
 .chip-pending{background:rgba(255,195,66,0.15);color:#8a5700}
 .chevron{color:var(--t3);transition:transform .25s;flex-shrink:0}
 .chevron.open{transform:rotate(180deg)}
-
 .card-detail{border-top:1px solid var(--line2);padding:14px 14px 16px;display:none}
 .card-detail.open{display:block}
 .detail-row{margin-bottom:12px}
@@ -121,45 +148,88 @@ a{text-decoration:none}
 .skel-lines{flex:1;display:flex;flex-direction:column;gap:7px}
 .skel-line{height:12px}
 .skel-line.s{width:55%}
-
 mark{background:#fef08a;color:inherit;border-radius:2px;padding:0 1px}
 </style>
 </head>
 <body>
 
-<!-- ── Setup Screen ── -->
-<div id="setup" class="screen active">
-  <div class="setup-card">
-    <div class="setup-logo">📌</div>
-    <div class="setup-title">Smart Pin 웹 뷰어</div>
-    <div class="setup-sub">Dev 모드에서도 Smart Pin 핀 내용을<br>브라우저로 확인할 수 있어요.</div>
+<!-- ── 1. 키 없이 접속한 경우: 안내 화면 ── -->
+<div id="guide" class="screen active">
+  <div class="guide-card">
+    <div class="guide-logo">📌</div>
+    <div class="guide-title">Smart Pin 웹 뷰어</div>
+    <div class="guide-sub">Figma Dev 모드에서 핀 내용을<br>브라우저로 바로 확인할 수 있어요.</div>
 
-    <div id="notice-nokey" class="notice-box" style="display:none">
-      <strong>파일 키가 없어요</strong>
-      Smart Pin 플러그인에서 "웹으로 보기" 버튼을 클릭하면<br>
-      파일 키가 포함된 URL로 자동 접속돼요.
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Figma에서 Smart Pin 플러그인 열기</div>
+          <div class="step-desc">일반 편집 모드에서 Smart Pin 플러그인을 켜주세요.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">플러그인 하단 버튼 클릭</div>
+          <div class="step-desc">목록 화면 맨 아래</div>
+          <span class="step-tag">웹으로 보기 →</span>
+          <div class="step-desc" style="margin-top:4px">버튼을 누르면 이 페이지로 자동 연결돼요.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Figma 토큰 한 번만 입력</div>
+          <div class="step-desc">처음 연결할 때만 Figma 계정 토큰을 입력하면 이후엔 자동으로 열려요.</div>
+        </div>
+      </div>
     </div>
 
-    <div class="field">
-      <label class="field-label" for="key-input">Figma 파일 키</label>
-      <input class="field-input" id="key-input" placeholder="예) aBcDeFgHiJkL..." autocomplete="off" spellcheck="false"/>
-      <div class="field-hint">플러그인 "웹으로 보기" 버튼을 누르면 자동으로 입력돼요.</div>
+    <div class="guide-divider">또는</div>
+    <button class="btn-manual" id="manual-btn">파일 키 직접 입력하기</button>
+  </div>
+</div>
+
+<!-- ── 2. 토큰 입력 화면 (키 있을 때) ── -->
+<div id="setup" class="screen">
+  <div class="setup-card">
+    <div class="setup-logo">📌</div>
+    <div class="setup-title">거의 다 됐어요!</div>
+    <div class="setup-sub">Figma 개인 토큰만 입력하면<br>핀 내용을 바로 확인할 수 있어요.</div>
+
+    <div class="info-row">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.4"/>
+        <path d="M8 7v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        <circle cx="8" cy="5" r=".8" fill="currentColor"/>
+      </svg>
+      <div class="info-row-text">토큰은 이 기기에만 저장되며 외부로 전송되지 않아요.</div>
+    </div>
+
+    <div class="token-steps">
+      <div class="token-step"><span class="token-step-n">①</span> Figma 우측 상단 프로필 클릭 → 설정(Settings)</div>
+      <div class="token-step"><span class="token-step-n">②</span> 보안(Security) 탭 → 개인 액세스 토큰</div>
+      <div class="token-step"><span class="token-step-n">③</span> 새 토큰 생성 후 복사해서 아래에 붙여넣기</div>
     </div>
 
     <div class="field">
       <label class="field-label" for="token-input">Figma 개인 액세스 토큰</label>
       <input class="field-input" id="token-input" type="password" placeholder="figd_xxxxxxxxxxxx..." autocomplete="off"/>
-      <div class="field-hint">
-        Figma 계정 설정 → 보안 → 개인 액세스 토큰에서 발급<br>
-        토큰은 이 기기에만 저장되며 외부 전송되지 않아요.
-      </div>
     </div>
 
-    <button class="btn-fill" id="connect-btn">연결하기</button>
+    <!-- 직접 입력 경로일 때만 표시 -->
+    <div id="manual-key-wrap" class="field">
+      <label class="field-label" for="key-input">Figma 파일 키</label>
+      <input class="field-input" id="key-input" placeholder="예) aBcDeFgHiJkL..." autocomplete="off" spellcheck="false"/>
+      <div class="field-hint">Figma 파일 URL에서 /design/ 뒤에 오는 문자열이에요.</div>
+    </div>
+
+    <button class="btn-fill" id="connect-btn">핀 목록 보기</button>
   </div>
 </div>
 
-<!-- ── App Screen ── -->
+<!-- ── 3. 핀 목록 화면 ── -->
 <div id="app" class="screen">
   <header>
     <div class="h-inner">
@@ -196,7 +266,6 @@ mark{background:#fef08a;color:inherit;border-radius:2px;padding:0 1px}
 <div class="toast" id="toast"></div>
 
 <script>
-// ── Constants ─────────────────────────────────────────────────────────────
 const NS       = 'smart_pin';
 const PINS_KEY = 'smart-pin-v1';
 const STUBS_KEY= 'smart-pin-stubs-v1';
@@ -207,16 +276,15 @@ const CAT_LABEL = {design:'Design',descript:'Descript',dev:'Dev',ask:'Ask'};
 const CAT_CLASS = {design:'chip-design',descript:'chip-descript',dev:'chip-dev',ask:'chip-ask'};
 const CAT_COLOR = {design:'#6366ff',descript:'#11bb85',dev:'#ff952f',ask:'#ea4444'};
 
-// ── State ─────────────────────────────────────────────────────────────────
-let fileKey     = new URLSearchParams(location.search).get('key') || '';
-let token       = localStorage.getItem(PAT_LS) || '';
-let pins        = [];
-let stubs       = [];
-let expandedId  = null;
-let query       = '';
-let refreshTimer= null;
+let fileKey    = new URLSearchParams(location.search).get('key') || '';
+let token      = localStorage.getItem(PAT_LS) || '';
+let isManual   = false; // 직접 입력 경로 여부
+let pins       = [];
+let stubs      = [];
+let expandedId = null;
+let query      = '';
+let refreshTimer = null;
 
-// ── Utils ─────────────────────────────────────────────────────────────────
 const esc = s => String(s)
   .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 
@@ -234,7 +302,6 @@ function toast(msg) {
   el._t = setTimeout(() => el.classList.remove('show'), 2500);
 }
 
-// ── API ───────────────────────────────────────────────────────────────────
 async function apiFetch() {
   const r = await fetch(`${API_BASE}/files/${fileKey}?depth=1&plugin_data=shared`,
     { headers:{ 'X-Figma-Token': token } });
@@ -251,7 +318,6 @@ async function apiFetch() {
   };
 }
 
-// ── Render ────────────────────────────────────────────────────────────────
 const matches = (p, q) => !q || [p.title,p.content,p.group,String(p.number)]
   .some(v => (v||'').toLowerCase().includes(q));
 
@@ -284,7 +350,6 @@ function pinCardHtml(p, q) {
   const open = expandedId === p.id;
   const node = (p.pinNodeId||'').replace(':','-');
   const link = fileKey && node ? `https://www.figma.com/design/${fileKey}?node-id=${node}` : null;
-
   return `
 <div class="pin-card" data-id="${esc(p.id)}">
   <div class="card-head">
@@ -335,7 +400,6 @@ function render() {
   const q   = query.trim().toLowerCase();
   const map = buildTree(q);
   const el  = document.getElementById('pin-list');
-
   const pageIds = Object.keys(map).filter(id => q ? map[id].pins.length : true);
   if (!pageIds.length) {
     el.innerHTML = `<div class="state">
@@ -345,7 +409,6 @@ function render() {
     </div>`;
     return;
   }
-
   el.innerHTML = pageIds.map(id => {
     const pg = map[id];
     return `<div class="page-section">
@@ -353,16 +416,13 @@ function render() {
         <span class="page-name">${esc(pg.name||id)}</span>
         <span class="page-cnt">${pg.pins.length}</span>
       </div>
-      ${pg.pins.length
-        ? groupedPins(pg.pins, q)
+      ${pg.pins.length ? groupedPins(pg.pins, q)
         : `<div style="padding:8px 20px;font-size:12px;color:var(--t3)">이 페이지에 핀이 없어요</div>`}
     </div>`;
   }).join('');
-
   el.querySelectorAll('.pin-card').forEach(card => {
     card.addEventListener('click', () => {
-      const id = card.dataset.id;
-      expandedId = expandedId === id ? null : id;
+      expandedId = expandedId === card.dataset.id ? null : card.dataset.id;
       render();
     });
   });
@@ -379,12 +439,10 @@ function skeleton() {
     </div>`).join('');
 }
 
-// ── Load ──────────────────────────────────────────────────────────────────
 async function load(soft=false) {
   const btn = document.getElementById('refresh-btn');
   btn.classList.add('spinning');
   if (!soft) skeleton();
-
   clearTimeout(refreshTimer);
   try {
     const d = await apiFetch();
@@ -401,9 +459,8 @@ async function load(soft=false) {
       <div class="state-icon">⚠️</div>
       <div class="state-title">${isAuth ? '인증 오류' : '불러오기 실패'}</div>
       <div class="state-desc">${isAuth ? '토큰이 유효하지 않아요.' : esc(e.message)}</div>
-      ${isAuth
-        ? `<button class="btn-retry" onclick="resetToken()">토큰 재설정</button>`
-        : `<button class="btn-retry" onclick="load()">다시 시도</button>`}
+      ${isAuth ? `<button class="btn-retry" onclick="resetToken()">토큰 재설정</button>`
+               : `<button class="btn-retry" onclick="load()">다시 시도</button>`}
     </div>`;
   } finally {
     btn.classList.remove('spinning');
@@ -412,40 +469,53 @@ async function load(soft=false) {
 }
 
 // ── Screen nav ────────────────────────────────────────────────────────────
+function show(id) {
+  ['guide','setup','app'].forEach(s => {
+    document.getElementById(s).classList.toggle('active', s === id);
+  });
+}
+
 function showApp() {
-  document.getElementById('setup').classList.remove('active');
-  document.getElementById('app').classList.add('active');
+  show('app');
   load();
 }
 
-function showSetup() {
-  clearTimeout(refreshTimer);
-  document.getElementById('app').classList.remove('active');
-  document.getElementById('setup').classList.add('active');
-  document.getElementById('key-input').value   = fileKey;
-  document.getElementById('token-input').value = '';
-  document.getElementById('notice-nokey').style.display = fileKey ? 'none' : 'block';
+function showSetupForKey() {
+  // 키가 URL에 있는 경우: 파일 키 필드 숨기고 토큰만
+  document.getElementById('manual-key-wrap').style.display = 'none';
+  show('setup');
+}
+
+function showSetupManual() {
+  // 직접 입력 경로: 파일 키 필드도 보여줌
+  isManual = true;
+  document.getElementById('manual-key-wrap').style.display = 'block';
+  show('setup');
 }
 
 function resetToken() {
   localStorage.removeItem(PAT_LS);
   token = '';
-  showSetup();
+  fileKey = new URLSearchParams(location.search).get('key') || '';
+  if (fileKey) showSetupForKey();
+  else show('guide');
+  clearTimeout(refreshTimer);
 }
 
-// ── Init ──────────────────────────────────────────────────────────────────
-document.getElementById('key-input').value = fileKey;
-document.getElementById('notice-nokey').style.display = fileKey ? 'none' : 'block';
+// ── Init ─────────────────────────────────────────────────────────────────
+document.getElementById('manual-btn').addEventListener('click', showSetupManual);
 
 document.getElementById('connect-btn').addEventListener('click', () => {
-  const k = document.getElementById('key-input').value.trim();
   const t = document.getElementById('token-input').value.trim();
-  if (!k) { toast('파일 키를 입력해주세요'); return; }
   if (!t) { toast('Figma 토큰을 입력해주세요'); return; }
-  fileKey = k;
-  token   = t;
+  if (isManual) {
+    const k = document.getElementById('key-input').value.trim();
+    if (!k) { toast('파일 키를 입력해주세요'); return; }
+    fileKey = k;
+    history.replaceState(null, '', `?key=${encodeURIComponent(fileKey)}`);
+  }
+  token = t;
   localStorage.setItem(PAT_LS, token);
-  history.replaceState(null, '', `?key=${encodeURIComponent(fileKey)}`);
   showApp();
 });
 
@@ -455,13 +525,19 @@ document.getElementById('token-input').addEventListener('keydown', e => {
 
 document.getElementById('refresh-btn').addEventListener('click', () => load(true));
 document.getElementById('reset-btn').addEventListener('click', resetToken);
-
 document.getElementById('search-input').addEventListener('input', e => {
   query = e.target.value;
   render();
 });
 
-if (fileKey && token) showApp();
+// ── Route ─────────────────────────────────────────────────────────────────
+if (fileKey && token) {
+  showApp();                 // 키O + 토큰O → 바로 목록
+} else if (fileKey) {
+  showSetupForKey();         // 키O + 토큰X → 토큰만 입력
+} else {
+  show('guide');             // 키X → 안내 화면
+}
 </script>
 </body>
 </html>
