@@ -51,9 +51,9 @@ a{text-decoration:none}
 .search-input::placeholder{color:var(--t3)}
 
 /* ── Page tabs ── */
-.tab-wrap{background:var(--card);border-bottom:1px solid var(--line2);position:sticky;top:112px;z-index:8;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
-.tab-wrap::-webkit-scrollbar{display:none}
-.tabs{display:flex;gap:6px;padding:8px 16px;width:max-content;min-width:100%}
+.tab-wrap{background:var(--card);border-bottom:1px solid var(--line2);position:sticky;top:112px;z-index:8}
+.tabs{display:flex;gap:6px;padding:8px 16px;max-width:640px;margin:0 auto;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
 .tab{display:inline-flex;align-items:center;gap:5px;height:32px;padding:0 12px;border-radius:9999px;font-size:12.5px;font-weight:600;color:var(--t3);background:var(--bg);flex-shrink:0;transition:all .15s;white-space:nowrap}
 .tab:hover{color:var(--t2)}
 .tab.active{background:var(--primary-bg);color:var(--primary)}
@@ -103,6 +103,14 @@ a{text-decoration:none}
 .state-desc{font-size:13px;color:var(--t2);line-height:1.7}
 
 mark{background:#fef08a;color:inherit;border-radius:2px;padding:0 1px}
+
+/* ── Paste (클립보드로 데이터 받기) ── */
+.paste-area{width:100%;min-height:110px;margin-top:22px;padding:14px;border:1.5px dashed var(--line);border-radius:12px;background:var(--bg);font-size:13px;color:var(--t2);resize:none;line-height:1.6;font-family:inherit}
+.paste-area:focus{border-color:var(--primary);border-style:solid;background:#fff}
+.paste-area::placeholder{color:var(--t3)}
+.paste-btn{width:100%;height:44px;margin-top:12px;background:var(--primary);color:#fff;border-radius:12px;font-size:14px;font-weight:700;transition:background .15s}
+.paste-btn:hover{background:var(--primary-dark)}
+.paste-error{margin-top:12px;padding:10px 12px;background:rgba(234,68,68,0.08);border-radius:10px;font-size:12.5px;color:#c0282a;text-align:center;line-height:1.6}
 </style>
 </head>
 <body>
@@ -131,6 +139,18 @@ mark{background:#fef08a;color:inherit;border-radius:2px;padding:0 1px}
         </div>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- ── Paste (클립보드에서 핀 데이터 받기) ── -->
+<div id="paste" class="screen">
+  <div class="guide-card">
+    <div class="guide-logo">📋</div>
+    <div class="guide-title">핀 데이터 붙여넣기</div>
+    <div class="guide-sub">방금 플러그인에서 핀 데이터가<br>클립보드에 복사됐어요.</div>
+    <textarea id="paste-area" class="paste-area" placeholder="여기를 클릭하고 붙여넣기(Cmd+V 또는 Ctrl+V)를 눌러주세요"></textarea>
+    <button id="paste-btn" class="paste-btn" type="button">클립보드에서 바로 가져오기</button>
+    <div id="paste-error" class="paste-error" style="display:none">데이터를 읽지 못했어요. 플러그인에서 "웹으로 보기"를 다시 눌러주세요.</div>
   </div>
 </div>
 
@@ -378,9 +398,22 @@ function render() {
   }
 }
 
-// ── Init ──────────────────────────────────────────────────────────────────
-const data = decodeHashData();
-if (data) {
+// ── Clipboard payload (URL 길이 제한을 피하기 위한 방식) ────────────────────
+const CLIP_PREFIX = 'SMARTPIN_V1:';
+
+function parseClipText(text) {
+  if (!text) return null;
+  const t = text.trim();
+  if (!t.startsWith(CLIP_PREFIX)) return null;
+  try { return JSON.parse(t.slice(CLIP_PREFIX.length)); } catch(_) { return null; }
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function loadPayload(data) {
   pins    = data.pins  || [];
   stubs   = data.stubs || [];
   fileKey = data.fileKey || null;
@@ -391,9 +424,38 @@ if (data) {
     snapEl.textContent = d.toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'}) + ' 기준';
   }
 
-  document.getElementById('guide').classList.remove('active');
-  document.getElementById('app').classList.add('active');
+  showScreen('app');
   render();
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────
+// 구버전 링크 호환용(URL 해시에 직접 데이터가 담긴 경우)
+const legacyData = decodeHashData();
+if (legacyData) {
+  loadPayload(legacyData);
+} else if (location.hash.slice(1).split('&').includes('paste=1')) {
+  showScreen('paste');
+  const area = document.getElementById('paste-area');
+  const errEl = document.getElementById('paste-error');
+  area.focus();
+
+  area.addEventListener('paste', e => {
+    e.preventDefault();
+    const text = (e.clipboardData || window.clipboardData).getData('text');
+    const obj = parseClipText(text);
+    if (obj) { loadPayload(obj); }
+    else { errEl.style.display = 'block'; }
+  });
+
+  document.getElementById('paste-btn').addEventListener('click', async () => {
+    try {
+      const text = await navigator.clipboard.readText();
+      const obj = parseClipText(text);
+      if (obj) { loadPayload(obj); return; }
+    } catch(_) {}
+    errEl.style.display = 'block';
+    area.focus();
+  });
 }
 
 document.getElementById('search-input').addEventListener('input', e => {
