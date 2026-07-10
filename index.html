@@ -22,7 +22,7 @@ a{text-decoration:none}
 .screen{display:none;min-height:100vh}
 .screen.active{display:flex;flex-direction:column}
 
-/* ── Guide (no data) ── */
+/* ── Guide ── */
 #guide{align-items:center;justify-content:center;padding:40px 16px}
 .guide-card{background:var(--card);border-radius:20px;padding:32px 28px;width:100%;max-width:420px;box-shadow:0 4px 24px rgba(0,0,0,0.06)}
 .guide-logo{font-size:36px;margin-bottom:14px;text-align:center}
@@ -35,30 +35,41 @@ a{text-decoration:none}
 .step-desc{font-size:12px;color:var(--t2);line-height:1.6}
 .step-tag{display:inline-block;background:var(--primary-bg);color:var(--primary);border-radius:6px;padding:1px 8px;font-size:11.5px;font-weight:600;margin-top:4px}
 
-/* ── App ── */
+/* ── Header ── */
 #app header{background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10}
-.h-inner{display:flex;align-items:center;gap:10px;height:52px;padding:0 20px;max-width:560px;margin:0 auto}
+.h-inner{display:flex;align-items:center;gap:10px;height:52px;padding:0 20px;max-width:640px;margin:0 auto}
 .h-logo{font-size:18px;flex-shrink:0}
 .h-title{font-size:16px;font-weight:800;color:var(--t1);letter-spacing:-0.03em;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-
-/* snapshot badge in header */
 .snap-badge{font-size:11px;font-weight:600;background:#fff9e7;color:#7a5c00;border:1px solid #ffe09b;border-radius:9999px;padding:2px 10px;white-space:nowrap;flex-shrink:0}
 
 /* ── Search ── */
 .search-wrap{padding:10px 16px;background:var(--card);border-bottom:1px solid var(--line2);position:sticky;top:52px;z-index:9}
-.search-box{max-width:560px;margin:0 auto;position:relative}
+.search-box{max-width:640px;margin:0 auto;position:relative}
 .search-box svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--t3);pointer-events:none}
 .search-input{width:100%;height:40px;background:var(--bg);border:1.5px solid transparent;border-radius:10px;padding:0 12px 0 36px;font-size:13.5px;color:var(--t1);transition:border-color .2s}
 .search-input:focus{border-color:var(--primary);background:#fff}
 .search-input::placeholder{color:var(--t3)}
 
+/* ── Page tabs ── */
+.tab-wrap{background:var(--card);border-bottom:1px solid var(--line2);position:sticky;top:112px;z-index:8;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.tab-wrap::-webkit-scrollbar{display:none}
+.tabs{display:flex;gap:6px;padding:8px 16px;width:max-content;min-width:100%}
+.tab{display:inline-flex;align-items:center;gap:5px;height:32px;padding:0 12px;border-radius:9999px;font-size:12.5px;font-weight:600;color:var(--t3);background:var(--bg);flex-shrink:0;transition:all .15s;white-space:nowrap}
+.tab:hover{color:var(--t2)}
+.tab.active{background:var(--primary-bg);color:var(--primary)}
+.tab-n{font-size:10.5px;font-weight:700;min-width:16px;height:16px;border-radius:9999px;display:flex;align-items:center;justify-content:center;padding:0 4px;background:rgba(0,0,0,0.07);color:inherit}
+.tab.active .tab-n{background:var(--primary);color:#fff}
+
 /* ── Pin list ── */
-.list{padding:16px 0 48px;flex:1;max-width:560px;width:100%;margin:0 auto}
-.page-section{margin-bottom:8px}
+.list{padding:12px 0 48px;flex:1;max-width:640px;width:100%;margin:0 auto}
+
+.page-section{margin-bottom:4px}
 .page-hd{padding:10px 20px 6px;display:flex;align-items:center;gap:8px}
-.page-name{font-size:14px;font-weight:700;color:var(--t1);letter-spacing:-0.02em}
+.page-name{font-size:13.5px;font-weight:700;color:var(--t2);letter-spacing:-0.01em}
 .page-cnt{font-size:11px;font-weight:700;color:#fff;background:var(--primary);border-radius:9999px;padding:2px 8px}
+
 .group-hd{padding:6px 20px 4px;font-size:11.5px;font-weight:600;color:var(--t3);display:flex;align-items:center;gap:4px}
+
 .pin-card{background:var(--card);margin:0 12px 2px;border-radius:12px;overflow:hidden;cursor:pointer;transition:box-shadow .15s}
 .pin-card:hover{box-shadow:0 2px 12px rgba(0,0,0,0.07)}
 .card-head{display:flex;align-items:center;gap:10px;padding:12px 14px}
@@ -76,6 +87,7 @@ a{text-decoration:none}
 .chip-pending{background:rgba(255,195,66,0.15);color:#8a5700}
 .chevron{color:var(--t3);transition:transform .25s;flex-shrink:0}
 .chevron.open{transform:rotate(180deg)}
+
 .card-detail{border-top:1px solid var(--line2);padding:14px 14px 16px;display:none}
 .card-detail.open{display:block}
 .detail-row{margin-bottom:12px}
@@ -90,16 +102,12 @@ a{text-decoration:none}
 .state-title{font-size:16px;font-weight:700;color:var(--t1);margin-bottom:6px}
 .state-desc{font-size:13px;color:var(--t2);line-height:1.7}
 
-/* ── Toast ── */
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--t1);color:#fff;padding:10px 18px;border-radius:12px;font-size:13px;font-weight:600;opacity:0;transition:transform .3s,opacity .3s;pointer-events:none;white-space:nowrap;z-index:999}
-.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
-
 mark{background:#fef08a;color:inherit;border-radius:2px;padding:0 1px}
 </style>
 </head>
 <body>
 
-<!-- ── 안내 화면 (data 없이 접속) ── -->
+<!-- ── Guide (데이터 없이 접속) ── -->
 <div id="guide" class="screen active">
   <div class="guide-card">
     <div class="guide-logo">📌</div>
@@ -126,7 +134,7 @@ mark{background:#fef08a;color:inherit;border-radius:2px;padding:0 1px}
   </div>
 </div>
 
-<!-- ── 핀 목록 화면 ── -->
+<!-- ── App ── -->
 <div id="app" class="screen">
   <header>
     <div class="h-inner">
@@ -146,21 +154,25 @@ mark{background:#fef08a;color:inherit;border-radius:2px;padding:0 1px}
     </div>
   </div>
 
+  <!-- 페이지 탭 (2개 이상일 때만 표시) -->
+  <div class="tab-wrap" id="tab-wrap" style="display:none">
+    <div class="tabs" id="tabs"></div>
+  </div>
+
   <div class="list" id="pin-list"></div>
 </div>
-
-<div class="toast" id="toast"></div>
 
 <script>
 const CAT_LABEL = {design:'Design',descript:'Descript',dev:'Dev',ask:'Ask'};
 const CAT_CLASS = {design:'chip-design',descript:'chip-descript',dev:'chip-dev',ask:'chip-ask'};
 const CAT_COLOR = {design:'#6366ff',descript:'#11bb85',dev:'#ff952f',ask:'#ea4444'};
 
-let pins      = [];
-let stubs     = [];
-let fileKey   = null;
-let expandedId= null;
-let query     = '';
+let pins        = [];
+let stubs       = [];
+let fileKey     = null;
+let expandedId  = null;
+let query       = '';
+let selPageId   = null; // 현재 선택된 탭 페이지
 
 // ── Utils ─────────────────────────────────────────────────────────────────
 const esc = s => String(s)
@@ -172,41 +184,40 @@ function hi(text, q) {
   return esc(text).replace(re,'<mark>$1</mark>');
 }
 
-function toast(msg) {
-  const el = document.getElementById('toast');
-  el.textContent = msg;
-  el.classList.add('show');
-  clearTimeout(el._t);
-  el._t = setTimeout(() => el.classList.remove('show'), 2500);
-}
-
-// ── Decode from URL hash ──────────────────────────────────────────────────
+// ── URL-safe base64 decode ────────────────────────────────────────────────
 function decodeHashData() {
   const hash = location.hash.slice(1);
   const m = hash.match(/(?:^|&)data=([^&]+)/);
   if (!m) return null;
   try {
+    // Restore URL-safe base64 → standard base64 → binary → JSON
+    const b64 = m[1].replace(/-/g, '+').replace(/_/g, '/');
+    // Pad if needed
+    const padded = b64 + '==='.slice(0, (4 - b64.length % 4) % 4);
     const json = decodeURIComponent(
-      atob(m[1]).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join('')
+      atob(padded).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join('')
     );
     return JSON.parse(json);
   } catch(_) { return null; }
 }
 
-// ── Render ────────────────────────────────────────────────────────────────
-const matches = (p, q) => !q || [p.title, p.content, p.group, String(p.number)]
-  .some(v => (v||'').toLowerCase().includes(q));
-
-function buildTree(q) {
+// ── Data helpers ──────────────────────────────────────────────────────────
+function getPageMap() {
   const map = {};
-  stubs.forEach(s => { map[s.pageId] = {name:s.pageName, pins:[]}; });
+  stubs.forEach(s => {
+    if (!map[s.pageId]) map[s.pageId] = {name: s.pageName, pins: []};
+  });
   pins.forEach(p => {
-    if (!map[p.pageId]) map[p.pageId] = {name:p.pageName||p.pageId, pins:[]};
-    if (matches(p, q)) map[p.pageId].pins.push(p);
+    if (!map[p.pageId]) map[p.pageId] = {name: p.pageName || p.pageId, pins: []};
+    map[p.pageId].pins.push(p);
   });
   return map;
 }
 
+const matches = (p, q) => !q || [p.title, p.content, p.group, String(p.number)]
+  .some(v => (v||'').toLowerCase().includes(q));
+
+// ── Render helpers ────────────────────────────────────────────────────────
 function badgeEl(p) {
   const c = p.status==='done' ? '#8b95a1' : (CAT_COLOR[p.category]||'#8b95a1');
   return `<div class="badge" style="background:${c}">${p.number}</div>`;
@@ -232,7 +243,7 @@ function pinCardHtml(p, q) {
     <div class="card-info">
       <div class="card-title">${hi(p.title||'(제목 없음)', q)}</div>
       <div class="card-meta">
-        ${p.group ? `<span class="card-group">${hi(p.group,q)}</span>` : ''}
+        ${p.group ? `<span class="card-group">${hi(p.group, q)}</span>` : ''}
         ${chips(p)}
       </div>
     </div>
@@ -260,49 +271,111 @@ function pinCardHtml(p, q) {
 function groupedPins(pagePins, q) {
   const gm = {};
   pagePins.forEach(p => { const g=p.group||''; (gm[g]=gm[g]||[]).push(p); });
-  return Object.keys(gm).sort((a,b) => !a?1:!b?-1:a.localeCompare(b)).map(g => {
+  return Object.keys(gm).sort((a,b)=>!a?1:!b?-1:a.localeCompare(b)).map(g => {
     const sorted = gm[g].sort((a,b)=>(a.number||0)-(b.number||0));
     return (g ? `<div class="group-hd">
       <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
         <path d="M2 5h6M5 2l3 3-3 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>${esc(g)}</div>` : '')
-      + sorted.map(p => pinCardHtml(p,q)).join('');
+      + sorted.map(p => pinCardHtml(p, q)).join('');
   }).join('');
 }
 
-function render() {
-  const q   = query.trim().toLowerCase();
-  const map = buildTree(q);
-  const el  = document.getElementById('pin-list');
-  const pageIds = Object.keys(map).filter(id => q ? map[id].pins.length : true);
-
-  if (!pageIds.length) {
-    el.innerHTML = `<div class="state">
-      <div class="state-icon">🔍</div>
-      <div class="state-title">${q ? `"${esc(q)}" 검색 결과 없음` : '핀이 없어요'}</div>
-      <div class="state-desc">${q ? '다른 검색어를 입력해보세요.' : '플러그인에서 핀을 추가해보세요.'}</div>
-    </div>`;
-    return;
-  }
-
-  el.innerHTML = pageIds.map(id => {
-    const pg = map[id];
-    return `<div class="page-section">
-      <div class="page-hd">
-        <span class="page-name">${esc(pg.name||id)}</span>
-        <span class="page-cnt">${pg.pins.length}</span>
-      </div>
-      ${pg.pins.length ? groupedPins(pg.pins, q)
-        : `<div style="padding:8px 20px;font-size:12px;color:var(--t3)">이 페이지에 핀이 없어요</div>`}
-    </div>`;
-  }).join('');
-
+function bindCards(el) {
   el.querySelectorAll('.pin-card').forEach(card => {
     card.addEventListener('click', () => {
       expandedId = expandedId === card.dataset.id ? null : card.dataset.id;
       render();
     });
   });
+}
+
+// ── Tabs ──────────────────────────────────────────────────────────────────
+function renderTabs(pageMap, pageIds) {
+  const wrap = document.getElementById('tab-wrap');
+  if (pageIds.length <= 1) { wrap.style.display = 'none'; return; }
+  wrap.style.display = 'block';
+
+  const tabsEl = document.getElementById('tabs');
+  tabsEl.innerHTML = pageIds.map(id => {
+    const pg = pageMap[id];
+    const active = id === selPageId;
+    return `<button class="tab ${active?'active':''}" data-id="${esc(id)}">
+      <span>${esc(pg.name || id)}</span>
+      <span class="tab-n">${pg.pins.length}</span>
+    </button>`;
+  }).join('');
+
+  tabsEl.querySelectorAll('.tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      selPageId  = btn.dataset.id;
+      query      = '';
+      expandedId = null;
+      document.getElementById('search-input').value = '';
+      window.scrollTo({top: 0, behavior: 'smooth'});
+      render();
+    });
+  });
+
+  // 활성 탭이 보이도록 스크롤
+  const active = tabsEl.querySelector('.tab.active');
+  if (active) active.scrollIntoView({inline:'nearest'});
+}
+
+// ── Main render ───────────────────────────────────────────────────────────
+function render() {
+  const q       = query.trim().toLowerCase();
+  const pageMap = getPageMap();
+  const pageIds = Object.keys(pageMap);
+  const el      = document.getElementById('pin-list');
+
+  // 첫 방문 시 첫 번째 페이지 선택
+  if (!selPageId && pageIds.length > 0) selPageId = pageIds[0];
+
+  if (q) {
+    // ── 검색 모드: 탭 숨기고 전체 페이지 검색 결과 표시
+    document.getElementById('tab-wrap').style.display = 'none';
+
+    const matched = pageIds.filter(id => pageMap[id].pins.some(p => matches(p, q)));
+    if (!matched.length) {
+      el.innerHTML = `<div class="state">
+        <div class="state-icon">🔍</div>
+        <div class="state-title">"${esc(q)}" 검색 결과 없음</div>
+        <div class="state-desc">다른 검색어를 입력해보세요.</div>
+      </div>`;
+      return;
+    }
+
+    el.innerHTML = matched.map(id => {
+      const pg = pageMap[id];
+      const filtered = pg.pins.filter(p => matches(p, q)).sort((a,b)=>(a.number||0)-(b.number||0));
+      return `<div class="page-section">
+        <div class="page-hd">
+          <span class="page-name">${esc(pg.name||id)}</span>
+          <span class="page-cnt">${filtered.length}</span>
+        </div>
+        ${groupedPins(filtered, q)}
+      </div>`;
+    }).join('');
+    bindCards(el);
+
+  } else {
+    // ── 탭 모드: 선택된 페이지만 표시
+    renderTabs(pageMap, pageIds);
+
+    const pg = selPageId ? pageMap[selPageId] : null;
+    if (!pg || !pg.pins.length) {
+      el.innerHTML = `<div class="state">
+        <div class="state-icon">📌</div>
+        <div class="state-title">이 페이지에 핀이 없어요</div>
+      </div>`;
+      return;
+    }
+
+    const sorted = [...pg.pins].sort((a,b)=>(a.number||0)-(b.number||0));
+    el.innerHTML = groupedPins(sorted, '');
+    bindCards(el);
+  }
 }
 
 // ── Init ──────────────────────────────────────────────────────────────────
@@ -312,18 +385,16 @@ if (data) {
   stubs   = data.stubs || [];
   fileKey = data.fileKey || null;
 
-  // Show snapshot time
   const snapEl = document.getElementById('snap-time');
   if (data.exportedAt) {
     const d = new Date(data.exportedAt);
-    snapEl.textContent = d.toLocaleTimeString('ko-KR', {hour:'2-digit', minute:'2-digit'}) + ' 기준';
+    snapEl.textContent = d.toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'}) + ' 기준';
   }
 
   document.getElementById('guide').classList.remove('active');
   document.getElementById('app').classList.add('active');
   render();
 }
-// else: guide screen stays visible
 
 document.getElementById('search-input').addEventListener('input', e => {
   query = e.target.value;
