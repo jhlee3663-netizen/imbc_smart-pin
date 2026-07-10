@@ -24,7 +24,7 @@ a{text-decoration:none}
 
 /* ── Guide ── */
 #guide{align-items:center;justify-content:center;padding:40px 16px}
-.guide-card{background:var(--card);border-radius:20px;padding:32px 28px;width:100%;max-width:420px;box-shadow:0 4px 24px rgba(0,0,0,0.06)}
+.guide-card{position:relative;background:var(--card);border-radius:20px;padding:32px 28px;width:100%;max-width:420px;box-shadow:0 4px 24px rgba(0,0,0,0.06)}
 .guide-logo{font-size:36px;margin-bottom:14px;text-align:center}
 .guide-title{font-size:20px;font-weight:800;color:var(--t1);margin-bottom:8px;letter-spacing:-0.03em;text-align:center}
 .guide-sub{font-size:13.5px;color:var(--t2);line-height:1.7;text-align:center;margin-bottom:28px}
@@ -111,6 +111,12 @@ mark{background:#fef08a;color:inherit;border-radius:2px;padding:0 1px}
 .paste-area{width:100%;min-height:110px;margin-top:12px;padding:14px;border:1.5px dashed var(--line);border-radius:12px;background:var(--bg);font-size:13px;color:var(--t2);resize:none;line-height:1.6;font-family:inherit}
 .paste-area:focus{border-color:var(--primary);border-style:solid;background:#fff}
 .paste-area::placeholder{color:var(--t3)}
+
+/* ── Language switch ── */
+.lang-switch{display:inline-flex;background:var(--bg);border-radius:9999px;padding:2px;flex-shrink:0}
+.lang-switch button{padding:4px 9px;font-size:11px;font-weight:700;border-radius:9999px;color:var(--t3);transition:all .15s}
+.lang-switch button.active{background:var(--primary);color:#fff}
+.card-lang{position:absolute;top:16px;right:16px}
 </style>
 </head>
 <body>
@@ -118,24 +124,27 @@ mark{background:#fef08a;color:inherit;border-radius:2px;padding:0 1px}
 <!-- ── Guide (데이터 없이 접속) ── -->
 <div id="guide" class="screen active">
   <div class="guide-card">
+    <div class="lang-switch card-lang" data-role="lang">
+      <button data-lang="ko">한</button><button data-lang="en">EN</button>
+    </div>
     <div class="guide-logo">📌</div>
-    <div class="guide-title">Smart Pin 웹 뷰어</div>
-    <div class="guide-sub">Figma Dev 모드에서도 핀 내용을<br>브라우저로 바로 볼 수 있어요.</div>
+    <div class="guide-title" data-i18n="guideTitle">Smart Pin 웹 뷰어</div>
+    <div class="guide-sub" data-i18n="guideSub">Figma Dev 모드에서도 핀 내용을<br>브라우저로 바로 볼 수 있어요.</div>
     <div class="steps">
       <div class="step">
         <div class="step-num">1</div>
         <div>
-          <div class="step-title">Figma에서 Smart Pin 플러그인 열기</div>
-          <div class="step-desc">일반 편집 모드에서 Smart Pin 플러그인을 실행해주세요.</div>
+          <div class="step-title" data-i18n="step1Title">Figma에서 Smart Pin 플러그인 열기</div>
+          <div class="step-desc" data-i18n="step1Desc">일반 편집 모드에서 Smart Pin 플러그인을 실행해주세요.</div>
         </div>
       </div>
       <div class="step">
         <div class="step-num">2</div>
         <div>
-          <div class="step-title">하단 버튼 한 번만 클릭</div>
-          <div class="step-desc">목록 화면 맨 아래</div>
-          <span class="step-tag">웹으로 보기 →</span>
-          <div class="step-desc" style="margin-top:5px">버튼을 누르면 핀 목록이 이 페이지에 바로 펼쳐져요.<br>별도 로그인이나 설정이 필요 없어요.</div>
+          <div class="step-title" data-i18n="step2Title">하단 버튼 한 번만 클릭</div>
+          <div class="step-desc" data-i18n="step2Desc">목록 화면 맨 아래</div>
+          <span class="step-tag" data-i18n="step2Tag">웹으로 보기 →</span>
+          <div class="step-desc" style="margin-top:5px" data-i18n="step2Desc2">버튼을 누르면 핀 목록이 이 페이지에 바로 펼쳐져요.<br>별도 로그인이나 설정이 필요 없어요.</div>
         </div>
       </div>
     </div>
@@ -145,16 +154,19 @@ mark{background:#fef08a;color:inherit;border-radius:2px;padding:0 1px}
 <!-- ── Paste (클립보드에서 핀 데이터 받기) ── -->
 <div id="paste" class="screen">
   <div class="guide-card">
+    <div class="lang-switch card-lang" data-role="lang">
+      <button data-lang="ko">한</button><button data-lang="en">EN</button>
+    </div>
     <div class="guide-logo">📌</div>
-    <div class="guide-title">Smart Pin 웹 뷰어</div>
-    <div class="guide-sub" id="paste-sub">핀 데이터를 불러오고 있어요...</div>
-    <button id="paste-btn" class="paste-btn" type="button" style="display:none">핀 목록 불러오기</button>
+    <div class="guide-title" data-i18n="guideTitle">Smart Pin 웹 뷰어</div>
+    <div class="guide-sub" id="paste-sub" data-i18n="pasteSubLoading">핀 데이터를 불러오고 있어요...</div>
+    <button id="paste-btn" class="paste-btn" type="button" style="display:none" data-i18n="pasteBtn">핀 목록 불러오기</button>
     <div id="paste-fallback" style="display:none">
-      <div class="paste-error" id="paste-error">
+      <div class="paste-error" id="paste-error" data-i18n="pasteErrorHtml">
         자동으로 불러오지 못했어요. 아래 상자를 클릭한 뒤 <strong>Cmd+V(맥) 또는 Ctrl+V(윈도우)</strong>로 붙여넣어주세요.<br>
         <span style="opacity:.75">(플러그인에서 "웹으로 보기"를 누르면 핀 데이터가 클립보드에 자동으로 복사돼요)</span>
       </div>
-      <textarea id="paste-area" class="paste-area" placeholder="여기를 클릭하고 붙여넣기(Cmd+V 또는 Ctrl+V)"></textarea>
+      <textarea id="paste-area" class="paste-area" data-i18n-placeholder="pastePlaceholder" placeholder="여기를 클릭하고 붙여넣기(Cmd+V 또는 Ctrl+V)"></textarea>
     </div>
   </div>
 </div>
@@ -166,6 +178,9 @@ mark{background:#fef08a;color:inherit;border-radius:2px;padding:0 1px}
       <span class="h-logo">📌</span>
       <span class="h-title">Smart Pin</span>
       <span class="snap-badge" id="snap-time"></span>
+      <div class="lang-switch" data-role="lang">
+        <button data-lang="ko">한</button><button data-lang="en">EN</button>
+      </div>
     </div>
   </header>
 
@@ -175,7 +190,7 @@ mark{background:#fef08a;color:inherit;border-radius:2px;padding:0 1px}
         <circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.5"/>
         <path d="M10.5 10.5L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
       </svg>
-      <input class="search-input" id="search-input" type="text" placeholder="핀 검색..." autocomplete="off"/>
+      <input class="search-input" id="search-input" type="text" data-i18n-placeholder="searchPlaceholder" placeholder="핀 검색..." autocomplete="off"/>
     </div>
   </div>
 
@@ -191,6 +206,107 @@ mark{background:#fef08a;color:inherit;border-radius:2px;padding:0 1px}
 const CAT_LABEL = {design:'Design',descript:'Descript',dev:'Dev',ask:'Ask'};
 const CAT_CLASS = {design:'chip-design',descript:'chip-descript',dev:'chip-dev',ask:'chip-ask'};
 const CAT_COLOR = {design:'#6366ff',descript:'#11bb85',dev:'#ff952f',ask:'#ea4444'};
+
+// ── i18n ─────────────────────────────────────────────────────────────────
+const I18N = {
+  ko: {
+    guideTitle: 'Smart Pin 웹 뷰어',
+    guideSub: 'Figma Dev 모드에서도 핀 내용을<br>브라우저로 바로 볼 수 있어요.',
+    step1Title: 'Figma에서 Smart Pin 플러그인 열기',
+    step1Desc: '일반 편집 모드에서 Smart Pin 플러그인을 실행해주세요.',
+    step2Title: '하단 버튼 한 번만 클릭',
+    step2Desc: '목록 화면 맨 아래',
+    step2Tag: '웹으로 보기 →',
+    step2Desc2: '버튼을 누르면 핀 목록이 이 페이지에 바로 펼쳐져요.<br>별도 로그인이나 설정이 필요 없어요.',
+    pasteSubLoading: '핀 데이터를 불러오고 있어요...',
+    pasteSubButton: '아래 버튼을 눌러 핀 목록을 불러와주세요.',
+    pasteBtn: '핀 목록 불러오기',
+    pasteErrorHtml: '자동으로 불러오지 못했어요. 아래 상자를 클릭한 뒤 <strong>Cmd+V(맥) 또는 Ctrl+V(윈도우)</strong>로 붙여넣어주세요.<br><span style="opacity:.75">(플러그인에서 "웹으로 보기"를 누르면 핀 데이터가 클립보드에 자동으로 복사돼요)</span>',
+    pastePlaceholder: '여기를 클릭하고 붙여넣기(Cmd+V 또는 Ctrl+V)',
+    searchPlaceholder: '핀 검색...',
+    statusDone: '완료',
+    statusPending: '보류',
+    noTitle: '(제목 없음)',
+    detailTitle: '제목',
+    detailContent: '내용',
+    detailGroup: '그룹',
+    viewInFigma: 'Figma에서 보기',
+    noResultsTitle: q => `"${q}" 검색 결과 없음`,
+    noResultsDesc: '다른 검색어를 입력해보세요.',
+    noPinsTitle: '이 페이지에 핀이 없어요',
+    snapFormat: time => `${time} 기준`,
+    localeCode: 'ko-KR',
+  },
+  en: {
+    guideTitle: 'Smart Pin Web Viewer',
+    guideSub: 'View pin notes right in your browser —<br>even in Figma Dev Mode.',
+    step1Title: 'Open the Smart Pin plugin in Figma',
+    step1Desc: 'Launch it from regular editing mode (not Dev Mode).',
+    step2Title: 'Click one button at the bottom',
+    step2Desc: 'At the bottom of the file list screen',
+    step2Tag: 'View in browser →',
+    step2Desc2: 'Tap it and your pins open right here —<br>no login or setup needed.',
+    pasteSubLoading: 'Loading pin data...',
+    pasteSubButton: 'Tap the button below to load your pins.',
+    pasteBtn: 'Load pins',
+    pasteErrorHtml: "Couldn't load it automatically. Click the box below, then paste with <strong>Cmd+V (Mac) or Ctrl+V (Windows)</strong>.<br><span style=\"opacity:.75\">(Clicking \"View in browser\" in the plugin copies your pin data to the clipboard automatically)</span>",
+    pastePlaceholder: 'Click here and paste (Cmd+V or Ctrl+V)',
+    searchPlaceholder: 'Search pins...',
+    statusDone: 'Done',
+    statusPending: 'Pending',
+    noTitle: '(Untitled)',
+    detailTitle: 'Title',
+    detailContent: 'Content',
+    detailGroup: 'Group',
+    viewInFigma: 'View in Figma',
+    noResultsTitle: q => `No results for "${q}"`,
+    noResultsDesc: 'Try a different search term.',
+    noPinsTitle: 'No pins on this page',
+    snapFormat: time => `As of ${time}`,
+    localeCode: 'en-US',
+  },
+};
+
+let lang = localStorage.getItem('sp_lang') || 'ko';
+if (lang !== 'ko' && lang !== 'en') lang = 'ko';
+
+function t(key) {
+  return I18N[lang][key];
+}
+
+function applyStaticI18n() {
+  document.documentElement.lang = lang;
+  document.title = t('guideTitle');
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    el.innerHTML = t(el.dataset.i18n);
+  });
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    el.placeholder = t(el.dataset.i18nPlaceholder);
+  });
+  document.querySelectorAll('.lang-switch button').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.lang === lang);
+  });
+}
+
+let pasteStage = 'loading'; // 'loading' | 'button'
+let pasteSubEl = null;
+
+function setLang(next) {
+  if (next !== 'ko' && next !== 'en') return;
+  lang = next;
+  localStorage.setItem('sp_lang', lang);
+  applyStaticI18n();
+  if (pasteSubEl && pasteStage === 'button') pasteSubEl.textContent = t('pasteSubButton');
+  if (document.getElementById('app').classList.contains('active')) {
+    updateSnapBadge();
+    render();
+  }
+}
+
+document.querySelectorAll('.lang-switch button').forEach(btn => {
+  btn.addEventListener('click', () => setLang(btn.dataset.lang));
+});
+applyStaticI18n();
 
 let pins        = [];
 let stubs       = [];
@@ -252,8 +368,8 @@ function chips(p) {
   let h = '';
   const cc = CAT_CLASS[p.category];
   if (cc) h += `<span class="chip ${cc}">${esc(CAT_LABEL[p.category])}</span>`;
-  if (p.status==='done')    h += `<span class="chip chip-done">완료</span>`;
-  if (p.status==='pending') h += `<span class="chip chip-pending">보류</span>`;
+  if (p.status==='done')    h += `<span class="chip chip-done">${t('statusDone')}</span>`;
+  if (p.status==='pending') h += `<span class="chip chip-pending">${t('statusPending')}</span>`;
   return h;
 }
 
@@ -266,7 +382,7 @@ function pinCardHtml(p, q) {
   <div class="card-head">
     ${badgeEl(p)}
     <div class="card-info">
-      <div class="card-title">${hi(p.title||'(제목 없음)', q)}</div>
+      <div class="card-title">${hi(p.title||t('noTitle'), q)}</div>
       <div class="card-meta">
         ${p.group ? `<span class="card-group">${hi(p.group, q)}</span>` : ''}
         ${chips(p)}
@@ -278,16 +394,16 @@ function pinCardHtml(p, q) {
   </div>
   ${open ? `
   <div class="card-detail open">
-    ${p.title   ? `<div class="detail-row"><div class="detail-label">제목</div><div class="detail-val">${hi(p.title,q)}</div></div>`   : ''}
-    ${p.content ? `<div class="detail-row"><div class="detail-label">내용</div><div class="detail-val">${hi(p.content,q)}</div></div>` : ''}
-    ${p.group   ? `<div class="detail-row"><div class="detail-label">그룹</div><div class="detail-val">${esc(p.group)}</div></div>`     : ''}
+    ${p.title   ? `<div class="detail-row"><div class="detail-label">${t('detailTitle')}</div><div class="detail-val">${hi(p.title,q)}</div></div>`   : ''}
+    ${p.content ? `<div class="detail-row"><div class="detail-label">${t('detailContent')}</div><div class="detail-val">${hi(p.content,q)}</div></div>` : ''}
+    ${p.group   ? `<div class="detail-row"><div class="detail-label">${t('detailGroup')}</div><div class="detail-val">${esc(p.group)}</div></div>`     : ''}
     ${link ? `<a class="btn-figma" href="${esc(link)}" target="_blank" rel="noopener">
       <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
         <path d="M7 3H3a1 1 0 00-1 1v9a1 1 0 001 1h9a1 1 0 001-1V9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
         <path d="M10 2h4v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
         <path d="M14 2L8 8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
       </svg>
-      Figma에서 보기
+      ${t('viewInFigma')}
     </a>` : ''}
   </div>` : ''}
 </div>`;
@@ -365,8 +481,8 @@ function render() {
     if (!matched.length) {
       el.innerHTML = `<div class="state">
         <div class="state-icon">🔍</div>
-        <div class="state-title">"${esc(q)}" 검색 결과 없음</div>
-        <div class="state-desc">다른 검색어를 입력해보세요.</div>
+        <div class="state-title">${esc(t('noResultsTitle')(q))}</div>
+        <div class="state-desc">${esc(t('noResultsDesc'))}</div>
       </div>`;
       return;
     }
@@ -392,7 +508,7 @@ function render() {
     if (!pg || !pg.pins.length) {
       el.innerHTML = `<div class="state">
         <div class="state-icon">📌</div>
-        <div class="state-title">이 페이지에 핀이 없어요</div>
+        <div class="state-title">${esc(t('noPinsTitle'))}</div>
       </div>`;
       return;
     }
@@ -418,17 +534,23 @@ function showScreen(id) {
   document.getElementById(id).classList.add('active');
 }
 
+let lastExportedAt = null;
+
+function updateSnapBadge() {
+  const snapEl = document.getElementById('snap-time');
+  if (!snapEl || !lastExportedAt) return;
+  const d = new Date(lastExportedAt);
+  const time = d.toLocaleTimeString(t('localeCode'), {hour:'2-digit',minute:'2-digit'});
+  snapEl.textContent = t('snapFormat')(time);
+}
+
 function loadPayload(data) {
   pins    = data.pins  || [];
   stubs   = data.stubs || [];
   fileKey = data.fileKey || null;
+  lastExportedAt = data.exportedAt || null;
 
-  const snapEl = document.getElementById('snap-time');
-  if (data.exportedAt) {
-    const d = new Date(data.exportedAt);
-    snapEl.textContent = d.toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'}) + ' 기준';
-  }
-
+  updateSnapBadge();
   showScreen('app');
   render();
 }
@@ -446,6 +568,7 @@ if (legacyData) {
   const fallback   = document.getElementById('paste-fallback');
   const errEl      = document.getElementById('paste-error');
   const area       = document.getElementById('paste-area');
+  pasteSubEl = subEl;
 
   async function tryClipboardRead() {
     try {
@@ -462,7 +585,8 @@ if (legacyData) {
   }
 
   function showButton() {
-    subEl.textContent = '아래 버튼을 눌러 핀 목록을 불러와주세요.';
+    pasteStage = 'button';
+    subEl.textContent = t('pasteSubButton');
     btn.style.display = 'block';
   }
 
