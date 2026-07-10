@@ -105,12 +105,12 @@ a{text-decoration:none}
 mark{background:#fef08a;color:inherit;border-radius:2px;padding:0 1px}
 
 /* ── Paste (클립보드로 데이터 받기) ── */
-.paste-area{width:100%;min-height:110px;margin-top:22px;padding:14px;border:1.5px dashed var(--line);border-radius:12px;background:var(--bg);font-size:13px;color:var(--t2);resize:none;line-height:1.6;font-family:inherit}
+.paste-btn{width:100%;height:44px;margin-top:22px;background:var(--primary);color:#fff;border-radius:12px;font-size:14px;font-weight:700;transition:background .15s}
+.paste-btn:hover{background:var(--primary-dark)}
+.paste-error{margin-top:22px;padding:12px 14px;background:rgba(234,68,68,0.08);border-radius:10px;font-size:12.5px;color:#c0282a;text-align:center;line-height:1.6}
+.paste-area{width:100%;min-height:110px;margin-top:12px;padding:14px;border:1.5px dashed var(--line);border-radius:12px;background:var(--bg);font-size:13px;color:var(--t2);resize:none;line-height:1.6;font-family:inherit}
 .paste-area:focus{border-color:var(--primary);border-style:solid;background:#fff}
 .paste-area::placeholder{color:var(--t3)}
-.paste-btn{width:100%;height:44px;margin-top:12px;background:var(--primary);color:#fff;border-radius:12px;font-size:14px;font-weight:700;transition:background .15s}
-.paste-btn:hover{background:var(--primary-dark)}
-.paste-error{margin-top:12px;padding:10px 12px;background:rgba(234,68,68,0.08);border-radius:10px;font-size:12.5px;color:#c0282a;text-align:center;line-height:1.6}
 </style>
 </head>
 <body>
@@ -145,12 +145,17 @@ mark{background:#fef08a;color:inherit;border-radius:2px;padding:0 1px}
 <!-- ── Paste (클립보드에서 핀 데이터 받기) ── -->
 <div id="paste" class="screen">
   <div class="guide-card">
-    <div class="guide-logo">📋</div>
-    <div class="guide-title">핀 데이터 붙여넣기</div>
-    <div class="guide-sub">방금 플러그인에서 핀 데이터가<br>클립보드에 복사됐어요.</div>
-    <textarea id="paste-area" class="paste-area" placeholder="여기를 클릭하고 붙여넣기(Cmd+V 또는 Ctrl+V)를 눌러주세요"></textarea>
-    <button id="paste-btn" class="paste-btn" type="button">클립보드에서 바로 가져오기</button>
-    <div id="paste-error" class="paste-error" style="display:none">데이터를 읽지 못했어요. 플러그인에서 "웹으로 보기"를 다시 눌러주세요.</div>
+    <div class="guide-logo">📌</div>
+    <div class="guide-title">Smart Pin 웹 뷰어</div>
+    <div class="guide-sub" id="paste-sub">핀 데이터를 불러오고 있어요...</div>
+    <button id="paste-btn" class="paste-btn" type="button" style="display:none">핀 목록 불러오기</button>
+    <div id="paste-fallback" style="display:none">
+      <div class="paste-error" id="paste-error">
+        자동으로 불러오지 못했어요. 아래 상자를 클릭한 뒤 <strong>Cmd+V(맥) 또는 Ctrl+V(윈도우)</strong>로 붙여넣어주세요.<br>
+        <span style="opacity:.75">(플러그인에서 "웹으로 보기"를 누르면 핀 데이터가 클립보드에 자동으로 복사돼요)</span>
+      </div>
+      <textarea id="paste-area" class="paste-area" placeholder="여기를 클릭하고 붙여넣기(Cmd+V 또는 Ctrl+V)"></textarea>
+    </div>
   </div>
 </div>
 
@@ -435,27 +440,48 @@ if (legacyData) {
   loadPayload(legacyData);
 } else if (location.hash.slice(1).split('&').includes('paste=1')) {
   showScreen('paste');
-  const area = document.getElementById('paste-area');
-  const errEl = document.getElementById('paste-error');
-  area.focus();
+
+  const subEl      = document.getElementById('paste-sub');
+  const btn        = document.getElementById('paste-btn');
+  const fallback   = document.getElementById('paste-fallback');
+  const errEl      = document.getElementById('paste-error');
+  const area       = document.getElementById('paste-area');
+
+  async function tryClipboardRead() {
+    try {
+      const text = await navigator.clipboard.readText();
+      const obj = parseClipText(text);
+      if (obj) { loadPayload(obj); return true; }
+    } catch (_) {}
+    return false;
+  }
+
+  function showManualFallback() {
+    fallback.style.display = 'block';
+    area.focus();
+  }
+
+  function showButton() {
+    subEl.textContent = '아래 버튼을 눌러 핀 목록을 불러와주세요.';
+    btn.style.display = 'block';
+  }
+
+  btn.addEventListener('click', async () => {
+    const ok = await tryClipboardRead();
+    if (!ok) showManualFallback();
+  });
 
   area.addEventListener('paste', e => {
     e.preventDefault();
     const text = (e.clipboardData || window.clipboardData).getData('text');
     const obj = parseClipText(text);
-    if (obj) { loadPayload(obj); }
-    else { errEl.style.display = 'block'; }
+    if (obj) loadPayload(obj);
+    else errEl.style.display = 'block';
   });
 
-  document.getElementById('paste-btn').addEventListener('click', async () => {
-    try {
-      const text = await navigator.clipboard.readText();
-      const obj = parseClipText(text);
-      if (obj) { loadPayload(obj); return; }
-    } catch(_) {}
-    errEl.style.display = 'block';
-    area.focus();
-  });
+  // 1) 페이지가 열리자마자 자동으로 한 번 시도 (대부분 브라우저에서 바로 성공)
+  // 2) 실패하면 버튼을 눌러 다시 시도 (버튼 클릭은 사용자 동작이라 권한이 더 잘 통과됨)
+  tryClipboardRead().then(ok => { if (!ok) showButton(); });
 }
 
 document.getElementById('search-input').addEventListener('input', e => {
