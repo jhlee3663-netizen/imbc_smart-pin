@@ -333,15 +333,19 @@ function hi(text, q) {
 
 function formattedInlineHtml(text, q, depth = 0) {
   if (depth > 3) return hi(text, q);
-  const re = /(\*\*[^*\n]+\*\*|__[^_\n]+__)/g;
+  // Bold's double-star alternative is listed before italic's single-star one,
+  // so at any "**" the engine prefers consuming it as bold over two italics.
+  const re = /(\*\*[^*\n]+\*\*|__[^_\n]+__|\*[^*\n]+\*)/g;
   let html = '';
   let last = 0;
   let match;
   while ((match = re.exec(text))) {
     html += hi(text.slice(last, match.index), q);
     const token = match[0];
-    const inner = formattedInlineHtml(token.slice(2, -2), q, depth + 1);
-    html += token.startsWith('**') ? `<strong>${inner}</strong>` : `<u>${inner}</u>`;
+    const markerLen = token.startsWith('**') ? 2 : 1;
+    const inner = formattedInlineHtml(token.slice(markerLen, -markerLen), q, depth + 1);
+    const tag = token.startsWith('**') ? 'strong' : token.startsWith('__') ? 'u' : 'em';
+    html += `<${tag}>${inner}</${tag}>`;
     last = match.index + token.length;
   }
   return html + hi(text.slice(last), q);
