@@ -94,6 +94,11 @@ a{text-decoration:none}
 .detail-row{margin-bottom:12px}
 .detail-label{font-size:11px;font-weight:600;color:var(--t3);margin-bottom:4px}
 .detail-val{font-size:13px;color:var(--t2);line-height:1.7;white-space:pre-wrap;word-break:break-word}
+.formatted-content{white-space:normal}
+.format-line{min-height:1.7em}
+.format-bullet{display:flex;align-items:flex-start;gap:7px}
+.format-bullet-dot{flex-shrink:0}
+.formatted-content u{text-underline-offset:2px}
 .btn-figma{display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 16px;background:var(--primary-bg);color:var(--primary);border-radius:8px;font-size:13px;font-weight:600;transition:background .15s;margin-top:4px}
 .btn-figma:hover{background:rgba(49,130,246,0.18)}
 
@@ -326,6 +331,31 @@ function hi(text, q) {
   return esc(text).replace(re,'<mark>$1</mark>');
 }
 
+function formattedInlineHtml(text, q, depth = 0) {
+  if (depth > 3) return hi(text, q);
+  const re = /(\*\*[^*\n]+\*\*|__[^_\n]+__)/g;
+  let html = '';
+  let last = 0;
+  let match;
+  while ((match = re.exec(text))) {
+    html += hi(text.slice(last, match.index), q);
+    const token = match[0];
+    const inner = formattedInlineHtml(token.slice(2, -2), q, depth + 1);
+    html += token.startsWith('**') ? `<strong>${inner}</strong>` : `<u>${inner}</u>`;
+    last = match.index + token.length;
+  }
+  return html + hi(text.slice(last), q);
+}
+
+function formattedContentHtml(text, q) {
+  return String(text).split('\n').map(line => {
+    const bullet = line.match(/^\s*(?:•|-)\s+(.*)$/);
+    return bullet
+      ? `<div class="format-line format-bullet"><span class="format-bullet-dot">•</span><span>${formattedInlineHtml(bullet[1], q)}</span></div>`
+      : `<div class="format-line">${formattedInlineHtml(line, q)}</div>`;
+  }).join('');
+}
+
 // ── URL-safe base64 decode ────────────────────────────────────────────────
 function decodeHashData() {
   const hash = location.hash.slice(1);
@@ -396,7 +426,7 @@ function pinCardHtml(p, q) {
   ${open ? `
   <div class="card-detail open">
     ${p.title   ? `<div class="detail-row"><div class="detail-label">${t('detailTitle')}</div><div class="detail-val">${hi(p.title,q)}</div></div>`   : ''}
-    ${p.content ? `<div class="detail-row"><div class="detail-label">${t('detailContent')}</div><div class="detail-val">${hi(p.content,q)}</div></div>` : ''}
+    ${p.content ? `<div class="detail-row"><div class="detail-label">${t('detailContent')}</div><div class="detail-val formatted-content">${formattedContentHtml(p.content,q)}</div></div>` : ''}
     ${p.group   ? `<div class="detail-row"><div class="detail-label">${t('detailGroup')}</div><div class="detail-val">${esc(p.group)}</div></div>`     : ''}
     ${link ? `<a class="btn-figma" href="${esc(link)}" target="_blank" rel="noopener">
       <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
